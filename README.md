@@ -13,6 +13,16 @@
 
 docker-compose -f docker-compose-cli.yaml up -d
 
+If containers already exists then use below commands 
+To see the list of existing containers
+docker ps -a -q
+
+To stop all existing containers 
+docker stop $(docker ps -a -q)
+
+To Remove all existing containers 
+docker rm $(docker ps -a -q)
+
 docker exec -it cli bash
 
 peer channel create -o orderer.orderernode.com:7050 -c myfirstchannel -f ./channel-artifacts/channel.tx --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/orderernode.com/orderers/orderer.orderernode.com/msp/tlscacerts/tlsca.orderernode.com-cert.pem
