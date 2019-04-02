@@ -8,7 +8,10 @@
 
 ./bin/configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org2MSPAnchors.tx -channelID myfirstchannel -asOrg Org2MSP
 
-docker-compose -f docker-compose-cli.yaml up -d
+This gives the list of network which are running. Use the name of the network 
+docker network ls
+
+COMPOSE_PROJECT_NAME=fabric-network-demo docker-compose -f docker-compose-cli.yaml up -d
 
 Check if all containers are up and running using
 
@@ -32,7 +35,6 @@ CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/c
 
 docker exec -it cli bash
 
-If wanted to run CLI commands against peer0.org1.peernode.com then
 export CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.peernode.com/users/Admin@org1.peernode.com/msp
 export CORE_PEER_ADDRESS=peer0.org1.peernode.com:7051
 export CORE_PEER_LOCALMSPID="Org1MSP"
@@ -114,4 +116,14 @@ peer chaincode install -n myfirstcc -v 1.0 -p github.com/chaincode/go/
 Instantiate Chaincode on channel
 
 peer chaincode instantiate -o orderer.orderernode.com:7050 --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/orderernode.com/orderers/orderer.orderernode.com/msp/tlscacerts/tlsca.orderernode.com-cert.pem -C $CHANNEL_NAME -n myfirstcc -v 1.0 -c '{"Args":["init","a", "100", "b","200"]}' -P "AND ('Org1MSP.peer','Org2MSP.peer')"
+
+
+Test
+Query
+peer chaincode query -C $CHANNEL_NAME -n myfirstcc -c '{"Args":["query","a"]}'
+
+peer chaincode invoke -o orderer.orderernode.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/orderernode.com/orderers/orderer.orderernode.com/msp/tlscacerts/tlsca.orderernode.com-cert.pem -C $CHANNEL_NAME -n myfirstcc --peerAddresses peer0.org1.peernode.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.peernode.com/peers/peer0.org1.peernode.com/tls/ca.crt --peerAddresses peer0.org2.peernode.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.peernode.com/peers/peer0.org2.peernode.com/tls/ca.crt -c '{"Args":["invoke","a","b","10"]}'
+
+
+
 
