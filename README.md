@@ -1,12 +1,15 @@
 Generate Cryptographic Material
 Below command will create crypto-config folder with all cryptographic material generated
+
 ./bin/cryptogen generate --config=crypto-config.yaml
 
 Generate required Tx files
 Generate Genesis block
+
 ./bin/configtxgen -profile TwoOrgsOrdererGenesis -outputBlock ./channel-artifacts/genesis.block
 
 Creates channel.tx file
+
 ./bin/configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID myfirstchannel
 
 Define Anchor Peers
