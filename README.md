@@ -1,3 +1,59 @@
+**Generate Cryptographic Material**
+
+Below command will create crypto-config folder with all cryptographic material generated
+
+    ./bin/cryptogen generate --config=crypto-config.yaml
+
+**Generate required Tx files**
+
+Generate Genesis block
+
+    ./bin/configtxgen -profile TwoOrgsOrdererGenesis -outputBlock ./channel-artifacts/genesis.block
+
+Creates channel.tx file
+
+    ./bin/configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID myfirstchannel
+
+Define Anchor Peers
+
+<![if !supportLists]>· <![endif]>For Org1 on channel
+
+    ./bin/configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org1MSPAnchors.tx -channelID myfirstchannel -asOrg Org1MSP
+
+<![if !supportLists]>· <![endif]>For Org2 on channel
+
+    ./bin/configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org2MSPAnchors.tx -channelID myfirstchannel -asOrg Org2MSP
+  
+
+*NOTE: This is for debugging
+To Check the list of active network
+
+    docker network ls
+
+Start the network
+
+    COMPOSE_PROJECT_NAME=fabric-network-demo docker-compose -f docker-compose-cli.yaml up -d
+
+Check list of containers running
+
+    docker ps
+
+To see the list of existing containers
+
+    docker ps -a -q
+
+To stop all existing containers
+
+    docker stop $(docker ps -a -q)
+
+To Remove all existing containers
+
+    docker rm $(docker ps -a -q)*
+
+
+
+
+
 ./bin/cryptogen generate --config=crypto-config.yaml
 
 ./bin/configtxgen -profile TwoOrgsOrdererGenesis -outputBlock ./channel-artifacts/genesis.block
