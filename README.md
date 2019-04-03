@@ -1,3 +1,5 @@
+## Create Fabric Network manually
+Below commands are step by step execution to bring up the Fabric network for two Organization having individually two nodes and one Orderer.
 
 
 ## Generate Cryptographic Material
